@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Lia · Cadena Imóveis</title>
+  <meta name="description" content="Lia, corretora virtual da Cadena Imóveis — ambiente de teste do atendimento.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#15233f">
+  <link rel="icon" href="lia/avatar.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="lia/peekobot.css">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <header class="site-top">
+    <div class="site-wrap site-top__inner">
+      <span class="site-logo">Cadena <span>Imóveis</span></span>
+      <span class="site-badge">Ambiente de teste</span>
+    </div>
+  </header>
+
+  <main class="site-wrap site-hero">
+    <p class="site-eyebrow">Atendimento digital</p>
+    <h1>Conheça a Lia, a corretora virtual da Cadena.</h1>
+    <p class="site-lead">Ela recebe quem chega pelo site, entende se a pessoa quer comprar, alugar, vender ou anunciar, faz a triagem em poucas perguntas e prepara o encaminhamento para a equipe certa.</p>
+    <ul class="site-points">
+      <li><strong>Botões ou texto livre.</strong> Dá para escrever "apê de 2 quartos no Portão até 450 mil" de uma vez.</li>
+      <li><strong>Não inventa.</strong> Sem catálogo conectado, ela avisa e prepara o encaminhamento em vez de sugerir imóveis.</li>
+      <li><strong>Transparente e cuidadosa com dados.</strong> Diz que é assistente virtual, pede consentimento e recusa CPF ou dados bancários no chat.</li>
+    </ul>
+    <button class="site-cta" type="button" data-lia-open>Conversar com a Lia</button>
+  </main>
+
+  <!-- Widget da Lia -->
+  <div class="lia-widget" data-state="closed">
+    <section class="lia-panel" id="lia-panel" aria-label="Chat com a Lia, assistente virtual da Cadena Imóveis">
+      <div class="lia-header">
+        <div class="lia-header__avatar" aria-hidden="true"></div>
+        <div class="lia-header__text">
+          <div class="lia-header__name">Lia</div>
+          <div class="lia-header__role">Corretora virtual<span class="lia-header__brand"> · Cadena Imóveis</span></div>
+        </div>
+        <button class="lia-iconbtn" id="lia-restart" type="button">Recomeçar</button>
+        <button class="lia-iconbtn lia-close" type="button" data-lia-close aria-label="Fechar o chat">✕</button>
+      </div>
+
+      <!-- Marcação do Peekobot -->
+      <div id="peekobot-container">
+        <div id="peekobot-inner" role="log" aria-live="polite" aria-relevant="additions">
+          <div id="peekobot"></div>
+        </div>
+      </div>
+
+      <form class="lia-form" id="lia-form" autocomplete="off">
+        <label class="sr-only" for="lia-input">Mensagem para a Lia</label>
+        <input id="lia-input" name="message" type="text" maxlength="500" placeholder="Escreva sua mensagem…" enterkeyhint="send">
+        <button class="lia-send" type="submit" aria-label="Enviar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+        </button>
+      </form>
+      <p class="lia-disclaimer" id="lia-disclaimer">Assistente virtual automatizada. Não envie documentos, senhas ou dados bancários por aqui.</p>
+    </section>
+
+    <button class="lia-launcher" type="button" data-lia-toggle aria-controls="lia-panel" aria-expanded="false">
+      <span class="lia-launcher__avatar" aria-hidden="true"></span>
+      <span class="lia-launcher__text">Fale com a Lia</span>
+    </button>
+  </div>
+
+  <script src="lia/lia.config.js"></script>
+  <script src="lia/lia-nlu.js"></script>
+  <script src="lia/peekobot.js"></script>
+  <script src="lia/widget.js"></script>
+</body>
+</html>

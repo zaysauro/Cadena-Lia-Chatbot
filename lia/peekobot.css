@@ -1,0 +1,309 @@
+/*
+ * Estilos da Lia — Cadena Imóveis
+ * Baseado no peekobot.css (Peekobot, licença MIT). Cores em tokens: troque pelos valores
+ * do manual de identidade visual da Cadena sem mexer no resto do arquivo.
+ */
+:root {
+  --lia-brand: #15233f;          /* azul institucional */
+  --lia-brand-ink: #ffffff;
+  --lia-accent: #e9b949;         /* dourado / 💛 da Lia */
+  --lia-accent-ink: #15233f;
+  --lia-bg: #ffffff;
+  --lia-surface: #f3f4f7;
+  --lia-surface-2: #e8ebf1;
+  --lia-text: #1b2333;
+  --lia-muted: #5d6677;
+  --lia-border: #dde1e8;
+  --lia-user: #15233f;
+  --lia-user-ink: #ffffff;
+  --lia-focus: #2f6fdb;
+  --lia-shadow: 0 18px 50px rgba(17, 27, 48, 0.18), 0 2px 8px rgba(17, 27, 48, 0.08);
+  --lia-radius: 18px;
+  --peekobot-height: min(620px, calc(100vh - 140px));
+  --peekobot-avatar: url("/lia/avatar.svg");
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --lia-brand: #0f1a30;
+    --lia-bg: #121826;
+    --lia-surface: #1c2435;
+    --lia-surface-2: #252f44;
+    --lia-text: #e9edf5;
+    --lia-muted: #a3adbf;
+    --lia-border: #2c3750;
+    --lia-user: #e9b949;
+    --lia-user-ink: #15233f;
+    --lia-focus: #7aa7ff;
+    --lia-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+  }
+}
+:root[data-theme="dark"] {
+  --lia-brand: #0f1a30;
+  --lia-bg: #121826;
+  --lia-surface: #1c2435;
+  --lia-surface-2: #252f44;
+  --lia-text: #e9edf5;
+  --lia-muted: #a3adbf;
+  --lia-border: #2c3750;
+  --lia-user: #e9b949;
+  --lia-user-ink: #15233f;
+  --lia-focus: #7aa7ff;
+  --lia-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+}
+
+/* ───── Janela ───── */
+.lia-panel {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  max-width: 100%;
+  height: var(--peekobot-height);
+  background: var(--lia-bg);
+  color: var(--lia-text);
+  border: 1px solid var(--lia-border);
+  border-radius: var(--lia-radius);
+  box-shadow: var(--lia-shadow);
+  overflow: hidden;
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+.lia-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 14px 14px 16px;
+  background: var(--lia-brand);
+  color: var(--lia-brand-ink);
+}
+.lia-header__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex: none;
+  background: var(--lia-accent) var(--peekobot-avatar) center / cover no-repeat;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.25);
+}
+.lia-header__text { flex: 1; min-width: 0; }
+.lia-header__name { font-weight: 700; font-size: 16px; line-height: 1.2; }
+.lia-header__role {
+  font-size: 12.5px;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.lia-header__role::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4cd08a;
+}
+.lia-iconbtn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 12.5px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  opacity: 0.85;
+}
+.lia-iconbtn:hover { background: rgba(255, 255, 255, 0.12); opacity: 1; }
+.lia-iconbtn:focus-visible { outline: 2px solid var(--lia-accent); outline-offset: 2px; }
+
+/* ───── Área de mensagens (marcação do Peekobot) ───── */
+#peekobot-container {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background: var(--lia-bg);
+}
+#peekobot-inner {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  padding: 16px 14px 8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--lia-surface-2) transparent;
+}
+@media (prefers-reduced-motion: reduce) {
+  #peekobot-inner { scroll-behavior: auto; }
+}
+
+.chat-response,
+.chat-ask,
+.lia-card {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  border-radius: 16px;
+  padding: 10px 13px;
+  line-height: 1.45;
+  font-size: 14.5px;
+  max-width: 82%;
+  margin-bottom: 8px;
+  overflow-wrap: anywhere;
+}
+.chat-response {
+  background: var(--lia-surface);
+  color: var(--lia-text);
+  margin-left: 34px;
+  position: relative;
+  border-top-left-radius: 6px;
+}
+.chat-response::before {
+  content: "";
+  position: absolute;
+  left: -34px;
+  top: 2px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--lia-accent) var(--peekobot-avatar) center / cover no-repeat;
+}
+/* avatar só na primeira bolha de uma sequência */
+.chat-response + .chat-response::before,
+.lia-card + .chat-response::before { display: none; }
+
+.chat-ask {
+  background: var(--lia-user);
+  color: var(--lia-user-ink);
+  margin-left: auto;
+  margin-right: 0;
+  border-top-right-radius: 6px;
+  width: fit-content;
+}
+.chat-response strong { font-weight: 700; }
+
+.choices {
+  opacity: 0;
+  transition: opacity 0.25s ease 0.05s;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 4px 0 12px 34px;
+}
+.choice {
+  appearance: none;
+  font: inherit;
+  font-size: 13.5px;
+  line-height: 1.2;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--lia-brand);
+  background: var(--lia-bg);
+  color: var(--lia-text);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+:root[data-theme="dark"] .choice { border-color: var(--lia-accent); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .choice { border-color: var(--lia-accent); } }
+.choice:hover:not(:disabled) { background: var(--lia-surface); }
+.choice:active:not(:disabled) { transform: scale(0.97); }
+.choice:focus-visible { outline: 2px solid var(--lia-focus); outline-offset: 2px; }
+.choice--primary { background: var(--lia-accent); border-color: var(--lia-accent); color: var(--lia-accent-ink); font-weight: 600; }
+.choice--primary:hover:not(:disabled) { background: var(--lia-accent); filter: brightness(1.05); }
+.choice:disabled { opacity: 0.45; cursor: default; }
+.choices:has(.choice:disabled) { margin-bottom: 8px; }
+
+.activated { opacity: 1; transform: translateY(0); }
+
+/* cartões: imóveis e resumo */
+.lia-card {
+  margin-left: 34px;
+  background: var(--lia-bg);
+  border: 1px solid var(--lia-border);
+  box-shadow: 0 2px 10px rgba(17, 27, 48, 0.06);
+  padding: 12px 14px;
+}
+.lia-card--summary { border-left: 4px solid var(--lia-accent); }
+.lia-card__title { font-weight: 700; margin-bottom: 6px; }
+.lia-card__row {
+  display: grid;
+  grid-template-columns: 112px 1fr;
+  gap: 8px;
+  font-size: 13.5px;
+  padding: 3px 0;
+  border-top: 1px dashed var(--lia-border);
+}
+.lia-card__row:first-of-type { border-top: 0; }
+.lia-card__key { color: var(--lia-muted); }
+.lia-card__note { margin-top: 8px; font-size: 12px; color: var(--lia-muted); }
+.lia-card__link { display: inline-block; margin-top: 8px; color: var(--lia-focus); font-weight: 600; font-size: 13.5px; }
+
+/* digitando… */
+.lia-typing {
+  display: inline-flex;
+  gap: 4px;
+  margin: 0 0 8px 34px;
+  padding: 12px 14px;
+  background: var(--lia-surface);
+  border-radius: 16px;
+  border-top-left-radius: 6px;
+}
+.lia-typing span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--lia-muted);
+  animation: lia-dot 1s infinite ease-in-out;
+}
+.lia-typing span:nth-child(2) { animation-delay: 0.15s; }
+.lia-typing span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes lia-dot { 0%, 80%, 100% { opacity: 0.3; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-3px); } }
+
+/* ───── Entrada de texto ───── */
+.lia-form {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--lia-border);
+  background: var(--lia-bg);
+}
+.lia-form input {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  font-size: 15px;
+  padding: 11px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--lia-border);
+  background: var(--lia-surface);
+  color: var(--lia-text);
+}
+.lia-form input::placeholder { color: var(--lia-muted); }
+.lia-form input:focus { outline: 2px solid var(--lia-focus); outline-offset: 0; border-color: transparent; }
+.lia-send {
+  appearance: none;
+  border: 0;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--lia-accent);
+  color: var(--lia-accent-ink);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.lia-send:focus-visible { outline: 2px solid var(--lia-focus); outline-offset: 2px; }
+.lia-send svg { width: 20px; height: 20px; }
+.lia-disclaimer {
+  margin: 0;
+  padding: 0 14px 10px;
+  font-size: 11.5px;
+  line-height: 1.35;
+  color: var(--lia-muted);
+  background: var(--lia-bg);
+  text-align: center;
+}
+.lia-disclaimer a { color: inherit; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
