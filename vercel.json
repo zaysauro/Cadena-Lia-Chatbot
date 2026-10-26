@@ -7,7 +7,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https://cadenaimoveis.com.br; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'"
+          "value": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https://cadenaimoveis.com.br https://rocketstatic2.com.br; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'"
         },
         {
           "key": "X-Content-Type-Options",
