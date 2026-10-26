@@ -1,21 +1,22 @@
 # Lia · Cadena Imóveis
 
-Chatbot de primeiro atendimento da **Cadena Imóveis**. A Lia é a corretora virtual (assistente digital) que recebe quem chega pelo site, identifica se a pessoa quer **comprar, alugar, vender, anunciar, financiar/MCMV ou acompanhar um atendimento**, faz a triagem com poucas perguntas e prepara o encaminhamento para a equipe certa.
+Site demo da **Cadena Imóveis** com a Lia, o chatbot de primeiro atendimento (publicado no projeto `cadena-demo` da Vercel). A Lia é a corretora virtual (assistente digital) que recebe quem chega pelo site, identifica se a pessoa quer **comprar, alugar, vender, anunciar, financiar/MCMV ou acompanhar um atendimento**, faz a triagem com poucas perguntas e prepara o encaminhamento para a equipe certa.
 
 O motor é baseado no [Peekobot](https://github.com/Peekobot/peekobot) (MIT) e segue a skill [`skills/lia-cadena-primeiro-atendimento.md`](skills/lia-cadena-primeiro-atendimento.md).
 
 ## Estrutura
 
 ```
-index.html                  página de teste com o widget da Lia
-site.css                    estilos da página e posição do widget
+index.html                  site demo (busca, destaques, favoritos) com o widget da Lia
+site.css                    estilos do site e posição do widget
+site.js                     destaques, busca e favoritos; publica os imóveis em window.LIA_CATALOG
 lia/
   lia.config.js             configuração (seção 16 da skill) — sem segredos
   lia-nlu.js                entendimento de texto livre por palavras-chave (modo sem IA)
   peekobot.js               motor da conversa (Peekobot estendido)
   peekobot.css              visual da Lia (tokens de cor no topo)
   widget.js                 abrir/fechar o chat
-  avatar.svg                avatar da Lia
+  lia.jpg                   foto da Lia
 skills/                     a skill de atendimento que o motor implementa
 vercel.json                 cabeçalhos de segurança para o deploy
 ```
@@ -35,7 +36,11 @@ Site estático: não tem build. A Vercel publica a pasta como está.
 
 ## Configuração
 
-Tudo em `lia/lia.config.js`. Enquanto os campos estão `null`, a Lia funciona em **modo de teste**: faz a triagem e mostra um resumo pronto para a equipe, deixando claro que ainda não está conectada aos canais.
+Tudo em `lia/lia.config.js`. Configuração atual da demo:
+
+- **Catálogo:** `"local"`, ou seja, os destaques do próprio site (`site.js`). A Lia mostra até 3 e oferece "Mostrar no site".
+- **Encaminhamento:** WhatsApp de Vendas (compra) e de Locação (aluguel), os mesmos publicados no site. Angariação, MCMV e atendimento ainda não têm canal próprio: a Lia mostra o resumo e oferece os dois WhatsApp gerais.
+- **Contato:** a Lia só pede nome e telefone/e-mail quando existe um sistema que vai receber esses dados (`lead_destination` ou rota `api`). Pelo WhatsApp, o próprio cliente envia a mensagem.
 
 | Campo | Para que serve |
 |---|---|
@@ -67,7 +72,7 @@ Segue o modelo da seção 11 da skill (`source`, `assistant`, `intent`, `lead`, 
 
 ## Visual
 
-As cores estão em tokens no topo de `lia/peekobot.css` (`--lia-brand`, `--lia-accent` etc.), com modo claro e escuro. Troque pelos valores do manual de identidade da Cadena.
+As cores estão em tokens no topo de `lia/peekobot.css`, no vermelho da Cadena (`#e04126`). Para ajustar ao manual de identidade, troque os tokens.
 
 ## Antes de produção (checklist da skill)
 

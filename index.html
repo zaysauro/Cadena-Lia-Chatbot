@@ -1,38 +1,114 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Lia · Cadena Imóveis</title>
-  <meta name="description" content="Lia, corretora virtual da Cadena Imóveis — ambiente de teste do atendimento.">
+  <title>Cadena Imóveis · Demo com assistente virtual</title>
+  <meta name="description" content="Demonstração do site da Cadena Imóveis com a Lia, corretora virtual de primeiro atendimento.">
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#15233f">
-  <link rel="icon" href="lia/avatar.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap">
+  <meta name="theme-color" content="#e04126">
+  <link rel="icon" href="lia/lia.jpg" type="image/jpeg">
   <link rel="stylesheet" href="lia/peekobot.css">
   <link rel="stylesheet" href="site.css">
 </head>
 <body>
-  <header class="site-top">
-    <div class="site-wrap site-top__inner">
-      <span class="site-logo">Cadena <span>Imóveis</span></span>
-      <span class="site-badge">Ambiente de teste</span>
+  <div class="rib">Demo interativa · não é o site oficial</div>
+  <div class="util">
+    <div class="w">
+      <span>Atendimento: <b>Seg a sex 9h às 18h · Sáb 9h às 12h</b></span>
+      <div>
+        <a href="https://api.whatsapp.com/send?l=pt_BR&amp;phone=5541998791047" target="_blank" rel="noopener">Vendas (41) 99879-1047</a>
+        <a href="https://api.whatsapp.com/send?l=pt_BR&amp;phone=5541996990773" target="_blank" rel="noopener">Locação (41) 99699-0773</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="top">
+    <div class="w">
+      <a class="logo" href="https://cadenaimoveis.com.br" target="_blank" rel="noopener"><img src="https://cadenaimoveis.com.br/media/cadenaimoveis/2023/07/imobiliaria-em-curitiba-cadena-imoveis-logo1.png" alt="Cadena Imóveis"></a>
+      <nav class="nav"><a href="#venda">Comprar</a><a href="#locacao">Alugar</a><a href="#contato">Contato</a></nav>
+      <a class="btn g" href="https://cadenaimoveis.com.br/area-do-cliente/" target="_blank" rel="noopener">Área do Cliente</a>
     </div>
   </header>
 
-  <main class="site-wrap site-hero">
-    <p class="site-eyebrow">Atendimento digital</p>
-    <h1>Conheça a Lia, a corretora virtual da Cadena.</h1>
-    <p class="site-lead">Ela recebe quem chega pelo site, entende se a pessoa quer comprar, alugar, vender ou anunciar, faz a triagem em poucas perguntas e prepara o encaminhamento para a equipe certa.</p>
-    <ul class="site-points">
-      <li><strong>Botões ou texto livre.</strong> Dá para escrever "apê de 2 quartos no Portão até 450 mil" de uma vez.</li>
-      <li><strong>Não inventa.</strong> Sem catálogo conectado, ela avisa e prepara o encaminhamento em vez de sugerir imóveis.</li>
-      <li><strong>Transparente e cuidadosa com dados.</strong> Diz que é assistente virtual, pede consentimento e recusa CPF ou dados bancários no chat.</li>
-    </ul>
-    <button class="site-cta" type="button" data-lia-open>Conversar com a Lia</button>
+  <main>
+    <section class="hero">
+      <div class="w">
+        <p class="eye">Imobiliária em Curitiba</p>
+        <h1>Encontre agora seu imóvel em Curitiba</h1>
+        <p class="sub">Venda, locação e lançamentos, com atendimento de corretores especialistas da região.</p>
+        <form class="srch" id="sf">
+          <div class="tabs">
+            <button type="button" class="tab on" data-m="venda">Comprar</button>
+            <button type="button" class="tab" data-m="aluguel">Alugar</button>
+          </div>
+          <div class="fields">
+            <label>Bairro
+              <select id="bairro"><option value="">Todos em Curitiba</option><option>Centro</option><option>Água Verde</option></select>
+            </label>
+            <label>Valor máximo
+              <select id="preco">
+                <option value="">Qualquer valor</option>
+                <option value="500000">Até R$ 500 mil</option>
+                <option value="1000000">Até R$ 1 milhão</option>
+                <option value="2000000">Até R$ 2 milhões</option>
+                <option value="3000">Até R$ 3 mil (locação)</option>
+              </select>
+            </label>
+            <label>Busca por código<input id="cod" placeholder="Ex.: 5783" autocomplete="off"></label>
+            <button class="btn p" type="submit">Buscar</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="sec" id="guia">
+      <div class="w guia">
+        <img class="guia__av" src="lia/lia.jpg" alt="" width="96" height="96">
+        <div>
+          <h2>Atendimento com a Lia</h2>
+          <p>A Lia é a corretora virtual da Cadena. Conte o que você procura, por botões ou do seu jeito (“apê de 2 quartos no Centro até 900 mil”), e ela busca nos imóveis do site e prepara o contato com a equipe certa.</p>
+          <button class="btn p" type="button" data-lia-open>Conversar com a Lia</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="venda">
+      <div class="w">
+        <div class="shd"><h2>Conheça nossos destaques para venda</h2><p>Os melhores imóveis à venda em Curitiba e região!</p></div>
+        <div class="grid" id="gv"></div>
+      </div>
+    </section>
+
+    <section class="sec alt" id="locacao">
+      <div class="w">
+        <div class="shd"><h2>Conheça nossos destaques para locação</h2><p>Os melhores imóveis para locação em Curitiba e região!</p></div>
+        <div class="grid" id="gl"></div>
+      </div>
+    </section>
   </main>
+
+  <footer class="foot" id="contato">
+    <div class="w fg">
+      <div>
+        <img class="fimg" src="https://cadenaimoveis.com.br/media/cadenaimoveis/2023/07/imobiliaria-em-curitiba-cadena-imoveis-logo1.png" alt="Cadena Imóveis">
+        <p>O nosso propósito é entregar a melhor experiência em transações imobiliárias de Curitiba! Somos digitais, transparentes, e o nosso foco é você.</p>
+        <p>CRECI J6230</p>
+      </div>
+      <div>
+        <h4>Ligue direto</h4>
+        <p>(41) 3121-3565</p>
+        <p><a href="https://api.whatsapp.com/send?l=pt_BR&amp;phone=5541998791047" target="_blank" rel="noopener">WhatsApp Vendas: (41) 99879-1047</a></p>
+        <p><a href="https://api.whatsapp.com/send?l=pt_BR&amp;phone=5541996990773" target="_blank" rel="noopener">WhatsApp Locação: (41) 99699-0773</a></p>
+      </div>
+      <div>
+        <h4>Unidade principal</h4>
+        <p>Rua Acyr Guimarães, 180 · Água Verde, Curitiba - PR, 80240-230</p>
+        <p>Segunda a sexta: 09:00 às 18:00 · Sábado: 09:00 às 12:00</p>
+      </div>
+    </div>
+    <div class="w fb">© 2026 Cadena Imóveis. CRECI J6230. Demonstração de layout e assistente virtual.</div>
+  </footer>
 
   <!-- Widget da Lia -->
   <div class="lia-widget" data-state="closed">
@@ -64,13 +140,17 @@
       <p class="lia-disclaimer" id="lia-disclaimer">Assistente virtual automatizada. Não envie documentos, senhas ou dados bancários por aqui.</p>
     </section>
 
-    <button class="lia-launcher" type="button" data-lia-toggle aria-controls="lia-panel" aria-expanded="false">
-      <span class="lia-launcher__avatar" aria-hidden="true"></span>
-      <span class="lia-launcher__text">Fale com a Lia</span>
-    </button>
+    <div class="lia-launch">
+      <div class="lia-hint" id="lia-hint" aria-hidden="true">Oi! Posso te ajudar a encontrar um imóvel?</div>
+      <button class="lia-launcher" type="button" data-lia-toggle aria-controls="lia-panel" aria-expanded="false" aria-label="Abrir chat com a Lia">
+        <span class="lia-launcher__avatar" aria-hidden="true"></span>
+        <span class="lia-launcher__dot" aria-hidden="true"></span>
+      </button>
+    </div>
   </div>
 
   <script src="lia/lia.config.js"></script>
+  <script src="site.js"></script>
   <script src="lia/lia-nlu.js"></script>
   <script src="lia/peekobot.js"></script>
   <script src="lia/widget.js"></script>

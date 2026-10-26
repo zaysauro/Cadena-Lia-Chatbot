@@ -139,14 +139,19 @@
       n.textContent = card.note;
       el.appendChild(n);
     }
-    if (card.link && /^https?:\/\//.test(card.link.href)) {
-      const a = document.createElement("a");
-      a.className = "lia-card__link";
-      a.href = card.link.href;
-      a.target = "_blank";
-      a.rel = "noopener noreferrer";
-      a.textContent = card.link.text;
-      el.appendChild(a);
+    const links = (card.links || (card.link ? [card.link] : [])).filter((l) => l && (/^https?:\/\//.test(l.href) || l.hl));
+    if (links.length) {
+      const row = document.createElement("div");
+      row.className = "lia-card__links";
+      links.forEach((l) => {
+        const a = document.createElement("a");
+        a.className = "lia-card__link";
+        a.textContent = l.text;
+        if (l.hl) { a.href = "#c" + l.hl; a.dataset.hl = l.hl; }   // destaca o card na própria página
+        else { a.href = l.href; a.target = "_blank"; a.rel = "noopener noreferrer"; }
+        row.appendChild(a);
+      });
+      el.appendChild(row);
     }
     insertNewChatItem(el, animate);
   }
@@ -480,7 +485,30 @@
 
   // ───── Consulta ao catálogo (search_listings) ─────
 
+  // Catálogo da própria página (window.LIA_CATALOG), usado quando catalog_provider é "local"
+  const TYPE_MATCH = {
+    apartamento: ["apartamento"], cobertura: ["cobertura"], "studio/kitnet": ["studio", "kitnet", "loft"],
+    casa: ["casa", "sobrado"], sobrado: ["sobrado", "casa"], terreno: ["terreno", "lote"],
+    comercial: ["comercial", "sala", "loja", "galpao"]
+  };
+  function searchLocal(f) {
+    const list = window.LIA_CATALOG;
+    if (!Array.isArray(list)) return { ok: false, reason: "no_local_catalog" };
+    const types = f.property_type ? TYPE_MATCH[f.property_type] || [f.property_type] : null;
+    const places = (f.neighborhoods || []).map(NLU.norm);
+    const items = list.filter((it) =>
+      (!it.mode || it.mode === f.intent) &&
+      (!types || types.includes(NLU.norm(it.type || ""))) &&
+      (!places.length || places.includes(NLU.norm(it.neighborhood || ""))) &&
+      (!f.budget_max || it.price <= f.budget_max) &&
+      (!f.budget_min || it.price >= f.budget_min) &&
+      (!f.bedrooms_min || (it.bedrooms || 0) >= f.bedrooms_min)
+    );
+    return { ok: true, items, local: true };
+  }
+
   async function searchListings(filters) {
+    if (CFG.catalog_provider === "local") return searchLocal(filters);
     if (!CFG.catalog_provider) return { ok: false, reason: "not_configured" };
     try {
       const qs = new URLSearchParams();
@@ -529,7 +557,8 @@
     }
 
     state.phase = "APRESENTACAO";
-    await say(items.length === 1 ? "Encontrei esta opção disponível:" : "Encontrei estas opções disponíveis:");
+    if (result.local) await say(items.length === 1 ? "Encontrei esta opção entre os imóveis do site:" : "Encontrei estas opções entre os imóveis do site:");
+    else await say(items.length === 1 ? "Encontrei esta opção disponível:" : "Encontrei estas opções disponíveis:");
     for (const it of items) {
       state.listing_ids.push(String(it.id));
       const rows = [];
@@ -541,8 +570,13 @@
       await card({
         title: String(it.title || "Imóvel " + it.id),
         rows,
-        note: it.updated_at ? "Atualizado em " + new Date(it.updated_at).toLocaleString("pt-BR") : "Valores e disponibilidade sujeitos a confirmação da equipe.",
-        link: it.url ? { href: String(it.url), text: "Ver anúncio" } : null
+        note: it.updated_at
+          ? "Atualizado em " + new Date(it.updated_at).toLocaleString("pt-BR")
+          : (p.parking_min ? "Vagas, valores e disponibilidade a confirmar com a equipe." : "Valores e disponibilidade a confirmar com a equipe."),
+        links: [
+          result.local ? { href: "#c" + it.id, text: "Mostrar no site", hl: String(it.id) } : null,
+          it.url ? { href: String(it.url), text: "Ver anúncio" } : null
+        ].filter(Boolean)
       });
     }
     state.awaiting = "__after_search";
@@ -567,7 +601,7 @@
   function route() {
     const d = department();
     const routes = CFG.handoff_routes || {};
-    return routes[d] || (d === "general" ? (routes.support || routes.sales || null) : null);
+    return routes[d] || (d === "general" ? (routes.support || null) : null);
   }
 
   function summaryRows() {
@@ -637,8 +671,9 @@
     state.phase = "ENCAMINHAMENTO";
     state.handoff.reason = reason || state.handoff.reason || "continuidade do atendimento";
     const r = route();
-    // Canais em que o próprio cliente fala com a equipe (WhatsApp / link) não precisam de contato coletado aqui.
-    const needsContact = !r || r.type === "api";
+    // Só pede nome e contato quando há um sistema que vai receber esses dados (LGPD: mínimo necessário).
+    // Por WhatsApp ou link, o próprio cliente fala com a equipe e não precisa informar nada aqui.
+    const needsContact = (r && r.type === "api") || !!CFG.lead_destination;
     if (needsContact && state.lead.contact_permission == null) {
       state.awaiting = "__consent";
       await say("Para a equipe dar continuidade ao atendimento sobre imóveis, posso registrar seu nome e um telefone ou e-mail de retorno? Seus dados serão usados para essa finalidade, conforme a política de privacidade da Cadena.", [
@@ -696,16 +731,42 @@
       return closing();
     }
 
-    // Sem integração: modo de teste honesto
+    // Sem rota para este setor: oferece os canais gerais da Cadena com o resumo pronto
+    const general = otherChannels();
+    if (!leadId && general.length) {
+      state.handoff.status = "ready_for_customer";
+      await say(department() === "general"
+        ? "Organizei o que você me contou. É só escolher a equipe abaixo: o WhatsApp abre com o resumo já escrito, e você só precisa enviar."
+        : "Ainda não tenho um canal direto da equipe de " + dept + ", então preparei o resumo abaixo. Você pode enviá-lo pelo WhatsApp da Cadena, e a equipe direciona para o setor certo.");
+      if (department() !== "general") await card({ title: "Resumo para a equipe", rows: summaryRows(), variant: "summary" });
+      await say("Por onde prefere falar?", general);
+      await hoursNote();
+      return closing();
+    }
+
+    // Sem integração nenhuma: modo de teste honesto
     state.handoff.status = leadId ? "lead_recorded" : "summary_only";
     if (leadId) {
-      await say("Registrei suas preferências para a equipe de " + dept + ". Elas vão te retornar pelo contato que você informou.");
+      await say("Registrei suas preferências para a equipe de " + dept + ". A equipe vai te retornar pelo contato que você informou.");
     } else {
       await say("Esta é uma versão de teste e eu ainda não estou conectada aos canais da equipe, então não consigo enviar sozinha. Preparei o resumo abaixo para a equipe de " + dept + " dar continuidade sem você precisar repetir nada.");
     }
     await card({ title: "Resumo para a equipe", rows: summaryRows(), variant: "summary" });
     await hoursNote();
     return closing(!leadId);
+  }
+
+  // Canais de WhatsApp/link configurados para vendas e locação, usados quando o setor não tem rota própria
+  function otherChannels() {
+    const routes = CFG.handoff_routes || {};
+    const names = { sales: "WhatsApp Vendas", rentals: "WhatsApp Locação" };
+    return ["sales", "rentals"].map((k) => {
+      const r = routes[k];
+      if (!r) return null;
+      if (r.type === "whatsapp") return { text: names[k], href: "https://wa.me/" + String(r.number).replace(/\D/g, "") + "?text=" + encodeURIComponent(summaryText()), primary: k === "sales" };
+      if (r.type === "url" && /^https?:\/\//.test(r.href)) return { text: k === "sales" ? "Equipe de vendas" : "Equipe de locação", href: r.href };
+      return null;
+    }).filter(Boolean);
   }
 
   async function hoursNote() {

@@ -1,77 +1,150 @@
-/* Página de demonstração + posicionamento do widget */
+/* Site demo da Cadena Imóveis + posicionamento do widget da Lia */
+:root {
+  --b: #e04126;
+  --bd: #b8301a;
+  --ink: #1d1f24;
+  --mu: #6b6f78;
+  --ln: #e6e8ec;
+  --bg: #f7f7f9;
+  --sh: 0 10px 30px rgba(20, 22, 30, 0.12);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  color: var(--ink);
+}
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: var(--lia-surface);
-  color: var(--lia-text);
-  font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  line-height: 1.55;
-}
+body { margin: 0; background: var(--bg); }
 html.lia-lock, html.lia-lock body { overflow: hidden; }
+a { color: inherit; text-decoration: none; }
+h1, h2, h3, h4, p { margin: 0; }
+.w { width: min(1180px, 92%); margin: 0 auto; }
 
-.site-wrap { width: min(1120px, 100% - 32px); margin-inline: auto; }
-.site-top { background: var(--lia-brand); color: #fff; }
-.site-top__inner { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 12px; }
-.site-logo { font-weight: 800; font-size: 20px; letter-spacing: 0.02em; }
-.site-logo span { color: var(--lia-accent); font-weight: 600; }
-.site-badge {
-  font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 999px;
-  background: rgba(233, 185, 73, 0.18); color: var(--lia-accent); white-space: nowrap;
-}
+.rib { background: #1d1f24; color: #fff; font-size: 13px; text-align: center; padding: 8px; }
+.util { background: #f1f2f5; font-size: 13px; color: var(--mu); }
+.util .w { display: flex; justify-content: space-between; gap: 16px; padding: 8px 0; flex-wrap: wrap; }
+.util b { color: var(--ink); }
+.util a { color: var(--ink); font-weight: 600; margin-left: 16px; }
 
-.site-hero { padding: 72px 0 120px; max-width: 1120px; }
-.site-hero > * { max-width: 560px; }
-.site-eyebrow { margin: 0 0 10px; font-weight: 700; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--lia-muted); }
-.site-hero h1 { margin: 0 0 18px; font-size: clamp(30px, 5vw, 46px); line-height: 1.12; letter-spacing: -0.02em; }
-.site-lead { margin: 0 0 24px; font-size: 18px; color: var(--lia-muted); }
-.site-points { margin: 0 0 32px; padding: 0; list-style: none; display: grid; gap: 12px; }
-.site-points li { padding-left: 22px; position: relative; }
-.site-points li::before { content: ""; position: absolute; left: 0; top: 0.6em; width: 9px; height: 9px; border-radius: 50%; background: var(--lia-accent); }
-.site-cta {
-  appearance: none; border: 0; cursor: pointer; font: inherit; font-weight: 700; font-size: 16px;
-  padding: 14px 22px; border-radius: 999px; background: var(--lia-brand); color: #fff;
-}
-.site-cta:focus-visible { outline: 3px solid var(--lia-focus); outline-offset: 3px; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .site-cta { background: var(--lia-accent); color: var(--lia-accent-ink); } }
+.top { position: sticky; top: 0; z-index: 20; background: #fff; border-bottom: 1px solid var(--ln); }
+.top .w { display: flex; align-items: center; gap: 24px; height: 76px; }
+.logo img { height: 52px; display: block; }
+.nav { display: flex; gap: 20px; margin-left: auto; font-size: 15px; font-weight: 500; }
+.nav a:hover { color: var(--b); }
 
-/* ───── Widget ───── */
-.lia-widget { position: fixed; right: 24px; bottom: 24px; z-index: 1000; display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
-.lia-widget .lia-panel {
-  transform-origin: bottom right;
-  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; padding: 10px 16px;
+  font-weight: 600; font-size: 14px; border: 1px solid transparent; cursor: pointer; font-family: inherit; transition: 0.15s;
 }
-.lia-widget[data-state="closed"] .lia-panel { opacity: 0; transform: translateY(12px) scale(0.98); visibility: hidden; pointer-events: none; }
-.lia-widget[data-state="open"] .lia-launcher__text { display: none; }
+.btn:focus-visible { outline: 3px solid #2f6fdb; outline-offset: 2px; }
+.p { background: var(--b); color: #fff; }
+.p:hover { background: var(--bd); }
+.o { border-color: var(--b); color: var(--b); background: transparent; }
+.o:hover { background: var(--b); color: #fff; }
+.g { border-color: var(--ln); background: #fff; }
 
-.lia-launcher {
-  appearance: none; border: 0; cursor: pointer; font: inherit; font-weight: 700; font-size: 15px;
-  display: inline-flex; align-items: center; gap: 10px; padding: 8px 18px 8px 8px;
-  border-radius: 999px; background: var(--lia-brand); color: #fff; box-shadow: var(--lia-shadow);
+.hero {
+  background: radial-gradient(900px 400px at 85% -10%, rgba(255, 255, 255, 0.18), transparent 60%),
+    linear-gradient(135deg, #e04126, #b8301a 60%, #7d1f10);
+  color: #fff; padding: 64px 0 90px;
 }
-.lia-widget[data-state="open"] .lia-launcher { padding: 8px; }
-.lia-launcher:focus-visible { outline: 3px solid var(--lia-accent); outline-offset: 3px; }
-.lia-launcher__avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--lia-accent) var(--peekobot-avatar) center / cover no-repeat; }
+.eye { text-transform: uppercase; letter-spacing: 0.12em; font-size: 12px; opacity: 0.85; margin-bottom: 12px; font-weight: 700; }
+.hero h1 { font-size: clamp(30px, 4.5vw, 52px); max-width: 720px; line-height: 1.15; }
+.sub { margin-top: 14px; font-size: 18px; opacity: 0.92; max-width: 620px; }
+.srch { margin-top: 34px; background: #fff; color: var(--ink); border-radius: 14px; padding: 18px; box-shadow: var(--sh); max-width: 960px; }
+.tabs { display: inline-flex; background: #f1f2f5; border-radius: 10px; padding: 4px; margin-bottom: 14px; }
+.tab { border: 0; background: transparent; padding: 8px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; font-family: inherit; color: var(--mu); }
+.tab.on { background: #fff; color: var(--ink); box-shadow: 0 1px 4px #00000014; }
+.fields { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 12px; align-items: end; }
+.fields label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--mu); font-weight: 600; }
+.fields select, .fields input {
+  height: 44px; border: 1px solid var(--ln); border-radius: 10px; padding: 0 12px; font-size: 15px;
+  font-family: inherit; color: var(--ink); background: #fff; min-width: 0;
+}
+.fields .btn { height: 44px; }
+
+.sec { padding: 60px 0; }
+.sec.alt { background: #fff; }
+.shd { margin-bottom: 22px; }
+.shd h2 { font-size: 28px; }
+.shd p { color: var(--mu); margin-top: 6px; }
+
+.guia { display: flex; gap: 24px; align-items: center; background: #fff; border: 1px solid var(--ln); border-radius: 18px; padding: 24px; box-shadow: var(--sh); }
+.guia__av { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; object-position: 50% 18%; flex: none; border: 3px solid #fff; box-shadow: var(--sh); }
+.guia h2 { font-size: 24px; margin-bottom: 6px; }
+.guia p { color: var(--mu); line-height: 1.5; margin-bottom: 14px; max-width: 720px; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+.card {
+  background: #fff; border: 1px solid var(--ln); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column;
+  position: relative; transition: transform 0.15s, box-shadow 0.15s;
+}
+.card:hover { transform: translateY(-3px); box-shadow: var(--sh); }
+.card.flash { animation: flash 1.6s ease; }
+@keyframes flash { 0%, 100% { box-shadow: 0 0 0 0 #e0412600; } 25% { box-shadow: 0 0 0 6px #e0412666; } }
+.media { height: 140px; background: linear-gradient(135deg, #f3d6cc, #e9e4df); position: relative; }
+.media.k2 { background: linear-gradient(135deg, #d8d2e8, #efe6dc); }
+.media.k3 { background: linear-gradient(135deg, #dfe9e3, #eef1ea); }
+.badge { position: absolute; top: 12px; left: 12px; background: #fff; color: var(--b); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+.fav { position: absolute; top: 8px; right: 8px; width: 36px; height: 36px; border-radius: 50%; border: 0; background: #fff; cursor: pointer; font-size: 18px; color: var(--b); box-shadow: 0 2px 8px #0002; }
+.body { padding: 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.meta { font-size: 13px; color: var(--mu); }
+.body h3 { font-size: 16px; }
+.price { font-size: 20px; font-weight: 800; margin-top: 4px; }
+.price small { font-size: 13px; font-weight: 500; color: var(--mu); }
+.body .btn { margin-top: auto; }
+.empty { color: var(--mu); padding: 24px 0; }
+
+.foot { background: #1d1f24; color: #d8dbe2; padding: 52px 0 0; }
+.foot h4 { color: #fff; margin-bottom: 12px; font-size: 16px; }
+.foot p { margin-bottom: 8px; font-size: 14px; }
+.foot a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+.fg { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; }
+.fb { border-top: 1px solid #2c2f37; margin-top: 36px; padding: 20px 0; font-size: 13px; color: #9aa0ab; }
+.fimg { height: 48px; background: #fff; border-radius: 8px; padding: 6px; margin-bottom: 12px; }
+
+/* ───── Widget da Lia ───── */
+.lia-widget { position: fixed; right: 20px; bottom: 20px; z-index: 1000; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+.lia-widget .lia-panel { transform-origin: bottom right; transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s; }
+.lia-widget[data-state="closed"] .lia-panel { opacity: 0; transform: translateY(12px) scale(0.98); visibility: hidden; pointer-events: none; position: absolute; bottom: 0; right: 0; }
+.lia-launch { display: flex; align-items: flex-end; gap: 12px; }
+.lia-hint {
+  background: #fff; padding: 10px 14px; border-radius: 14px 14px 4px 14px; box-shadow: var(--sh);
+  max-width: 230px; font-weight: 500; line-height: 1.35; font-size: 14px; transition: opacity 0.3s;
+}
+.lia-widget[data-state="open"] .lia-hint { display: none; }
+.lia-launcher { position: relative; border: 0; background: transparent; padding: 0; cursor: pointer; border-radius: 50%; }
+.lia-launcher:focus-visible { outline: 3px solid #2f6fdb; outline-offset: 3px; }
+.lia-launcher__avatar {
+  display: block; width: 80px; height: 80px; border-radius: 50%; border: 3px solid #fff; box-shadow: var(--sh);
+  background: #fff4ec var(--peekobot-avatar) 50% 18% / cover no-repeat; animation: lia-breathe 3.2s ease-in-out infinite;
+}
+.lia-widget[data-state="open"] .lia-launcher__avatar { width: 56px; height: 56px; animation: none; }
+.lia-launcher__dot { position: absolute; right: 4px; top: 4px; width: 16px; height: 16px; border-radius: 50%; background: #22c55e; border: 3px solid #fff; }
+@keyframes lia-breathe { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
 .lia-close { font-size: 15px; }
+.lia-header__avatar, .chat-response::before { background-position: 50% 18% !important; }
 
+@media (max-width: 900px) {
+  .nav { display: none; }
+  .fields { grid-template-columns: 1fr 1fr; }
+}
 @media (max-width: 640px) {
   .lia-widget { right: 16px; bottom: 16px; }
   .lia-widget .lia-panel {
-    position: fixed; inset: 0; width: 100%; height: 100%; height: 100dvh;
-    border-radius: 0; border: 0;
+    position: fixed; inset: 0; width: 100%; height: 100%; height: 100dvh; border-radius: 0; border: 0;
     padding-bottom: env(safe-area-inset-bottom);
   }
-  .lia-widget[data-state="open"] .lia-launcher { display: none; }
-  .site-hero { padding-top: 44px; }
-  .site-lead { font-size: 16.5px; }
+  .lia-widget[data-state="open"] .lia-launch { display: none; }
+  .lia-hint, .util .w span { display: none; }
+  .fields { grid-template-columns: 1fr; }
+  .guia { flex-direction: column; align-items: flex-start; }
 }
-@media (min-width: 641px) {
-  .lia-close { display: none; }
-}
+@media (min-width: 641px) { .lia-close { display: none; } }
+@media (max-width: 400px) { .lia-header__brand { display: none; } }
 @media (prefers-reduced-motion: reduce) {
   .lia-widget .lia-panel { transition: none; }
+  .lia-launcher__avatar { animation: none; }
 }
-@media (max-width: 400px) {
-  .lia-header__brand { display: none; }
+.lia-header { background: linear-gradient(135deg, #e04126, #b8301a); }
+@media (max-width: 640px) {
+  .lia-launcher__avatar { width: 62px; height: 62px; }
 }

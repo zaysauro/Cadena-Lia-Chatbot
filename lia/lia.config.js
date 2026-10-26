@@ -19,13 +19,17 @@ window.LIA_CONFIG = {
   service_regions: [],
 
   // Ex.: "segunda a sexta, das 9h às 18h". null = a Lia não promete horário.
-  human_service_hours: null,
+  // Valor abaixo: o mesmo horário publicado no site demo.
+  human_service_hours: "de segunda a sexta, das 9h às 18h, e aos sábados, das 9h às 12h",
 
   // URL real da política de privacidade da Cadena.
   privacy_policy_url: null,
 
-  // Endpoint de busca de imóveis (mesma origem, ex.: "/api/listings"). Contrato esperado em README.md.
-  catalog_provider: null,
+  // Onde a Lia busca imóveis:
+  //   "local"           -> os destaques publicados pela própria página em window.LIA_CATALOG (site.js)
+  //   "/api/listings"   -> endpoint da mesma origem (contrato no README.md)
+  //   null              -> sem catálogo: a Lia avisa e prepara o encaminhamento
+  catalog_provider: "local",
 
   // Endpoint que grava o lead (mesma origem, ex.: "/api/leads"). Deve responder { success, lead_id }.
   lead_destination: null,
@@ -35,9 +39,10 @@ window.LIA_CONFIG = {
   //   { type: "url", href: "https://..." }            -> abre um link (formulário oficial, página de contato etc.)
   //   { type: "api", endpoint: "/api/route" }         -> POST com o lead; só confirma se responder { success: true }
   //   null                                            -> sem destino: a Lia mostra o resumo e não diz que encaminhou
+  // Números abaixo: os WhatsApp de Vendas e Locação publicados no site demo.
   handoff_routes: {
-    sales: null,        // compra
-    rentals: null,      // locação
+    sales: { type: "whatsapp", number: "5541998791047" },    // compra
+    rentals: { type: "whatsapp", number: "5541996990773" },  // locação
     acquisition: null,  // angariação: proprietário que quer vender ou alugar
     mcmv: null,         // Minha Casa Minha Vida / financiamento
     support: null       // contrato, cobrança, manutenção, visita/proposta em andamento
@@ -47,7 +52,11 @@ window.LIA_CONFIG = {
 
   // Respostas institucionais APROVADAS (lookup_faq). Só entra aqui texto validado pela Cadena.
   // Formato: { keywords: ["horario", "funciona"], answer: "..." }
-  faq: [],
+  faq: [
+    { keywords: ["simul"], answer: "O site tem um simulador de financiamento em cadenaimoveis.com.br/simulador. Os valores finais dependem da análise de crédito do banco." },
+    { keywords: ["horario"], answer: "A equipe atende de segunda a sexta, das 9h às 18h, e aos sábados, das 9h às 12h." },
+    { keywords: ["endereco"], answer: "A unidade principal fica na Rua Acyr Guimarães, 180, Água Verde, Curitiba." }
+  ],
 
   // Ritmo da conversa (ms). A Lia mostra "digitando..." enquanto espera.
   typing_delay_ms: 650
